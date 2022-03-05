@@ -53,9 +53,15 @@ class RouteResolver(object):
         result = self._either_option_matcher.sub(lambda m: m.group(1), result)
 
         # clean up any outstanding regex-y characters.
-        result = result.replace('^', '').replace('$', '') \
-            .replace('?', '').replace('//', '/').replace('\\', '')
-
+        result = (
+            result.replace('^', '')
+            .replace('$', '')
+            .replace('?', '')
+            .replace('\\A', '')
+            .replace('\\Z', '')
+            .replace('//', '/')
+            .replace('\\', '')
+        )
         return result
 
     def _resolve(self, resolver, path, parents=None):
